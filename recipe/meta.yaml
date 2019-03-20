@@ -7,7 +7,6 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: pals_{{ version }}.tar.gz
   url:
     - {{ cran_mirror }}/src/contrib/pals_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/pals/pals_{{ version }}.tar.gz
@@ -15,16 +14,20 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 0
-  # no r-rgl package for OSX
-  skip: true  # [win32 or osx]
+  number: 1
+  noarch: generic
   rpaths:
     - lib/R/lib/
     - lib/
 
 requirements:
   build:
-    - {{posix}}zip               # [win]
+    - {{posix}}zip                   # [win]
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - {{ cdt('libxdamage') }}        # [linux]
+    - {{ cdt('libxfixes') }}         # [linux]
+    - {{ cdt('libxxf86vm') }}        # [linux]
+    - {{ cdt('mesa-dri-drivers') }}  # [linux]
   host:
     - r-base
     - r-colorspace
@@ -42,7 +45,7 @@ requirements:
 
 test:
   commands:
-    - $R -e "library('pals')"           # [not win]
+    - LD_LIBRARY_PATH=${BUILD_PREFIX}/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib64 $R -e "library('pals')"  # [not win]
     - "\"%R%\" -e \"library('pals')\""  # [win]
 
 about:
@@ -50,13 +53,30 @@ about:
   license: GPL-3
   summary: A comprehensive collection of color palettes, colormaps, and tools to evaluate them.
   license_family: GPL3
-  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'  # [unix]
-  license_file: '{{ environ["PREFIX"] }}\R\share\licenses\GPL-3'  # [win]
+  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
 
 extra:
   recipe-maintainers:
-    - johanneskoester
-    - bgruening
-    - daler
-    - jdblischak
-    - cbrueffer
+    - conda-forge/r
+
+# Package: pals
+# Version: 1.5
+# Authors@R: person("Kevin","Wright", email="kw.stat@gmail.com", role=c("aut","cre"))
+# Date: 2018-01-22
+# Title: Color Palettes, Colormaps, and Tools to Evaluate Them
+# Description: A comprehensive collection of color palettes, colormaps, and tools to evaluate them.
+# URL: https://github.com/kwstat/pals
+# BugReports: https://github.com/kwstat/pals/issues
+# VignetteBuilder: knitr
+# Encoding: UTF-8
+# Depends: R (>= 2.10), maps,
+# Imports: dichromat, colorspace, graphics, grDevices, mapproj, methods, rgl, stats
+# Suggests: classInt, ggplot2, knitr, latticeExtra, reshape2, testthat
+# License: GPL-3
+# RoxygenNote: 6.0.1
+# NeedsCompilation: no
+# Packaged: 2018-01-22 20:51:09 UTC; wrightkevi
+# Author: Kevin Wright [aut, cre]
+# Maintainer: Kevin Wright <kw.stat@gmail.com>
+# Repository: CRAN
+# Date/Publication: 2018-01-22 22:06:15 UTC
