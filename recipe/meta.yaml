@@ -1,4 +1,4 @@
-{% set version = "1.8" %}
+{% set version = "1.9" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -10,7 +10,7 @@ source:
   url:
     - {{ cran_mirror }}/src/contrib/pals_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/pals/pals_{{ version }}.tar.gz
-  sha256: 0b52dfccd8b2b04b0e30bdcd72c790ac652c35024ed21f77d77cac83e79ed47c
+  sha256: 59b91e8ed5db503a7fcf4b0177d833a6265bd6da1a244fd7232b0d8ab737d5e6
 
 build:
   merge_build_host: true  # [win]
