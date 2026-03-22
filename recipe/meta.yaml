@@ -28,7 +28,6 @@ requirements:
     - r-mapproj
     - r-maps
     - r-rgl
-    - libgl-devel                    # [linux]
   run:
     - r-base
     - r-colorspace
